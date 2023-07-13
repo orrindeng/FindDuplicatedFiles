@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -78,6 +80,62 @@ namespace FindDuplicatedFiles
                     }
                 });
             }
+        }
+
+        private void FindDuplicatedPlugins_Click(object sender, RoutedEventArgs e)
+        {
+            var path = @$"C:\Users\Public\Documents\ForguncyPlugin{DesignerVersion.Text}";
+            if (!Directory.Exists(path))
+            {
+                FindDuplicatedPluginsResultTextBox.AppendText($"目录 {path} 不存在。{Environment.NewLine}");
+                path = Path.GetFullPath(DesignerVersion.Text);
+                if (!Directory.Exists(path))
+                {
+                    FindDuplicatedPluginsResultTextBox.AppendText($"目录 {path} 不存在。{Environment.NewLine}");
+                    return;
+                }
+            }
+
+            FindDuplicatedPluginsResultTextBox.AppendText($"查找开始{Environment.NewLine}");
+
+            var pluginConfigs = Directory.EnumerateFiles(path, "PluginConfig.json", SearchOption.AllDirectories).SelectMany(s =>
+            {
+                var file = File.ReadAllText(s);
+                try
+                {
+                    var obj = JsonConvert.DeserializeObject<JObject>(file);
+                    if (obj?.TryGetValue("assembly", out var assemblyObj) == true)
+                    {
+                        var list = assemblyObj.ToObject<List<string>>();
+                        if (list != null)
+                        {
+                            return list.Select(item => (item, s));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FindDuplicatedPluginsResultTextBox.AppendText($"读取PluginConfig失败，路径：{s}，异常：{ex.Message}{Environment.NewLine}");
+                }
+                return new List<(string, string)>();
+            }).ToList();
+
+            var groupedItems = pluginConfigs.GroupBy(p => p.item, p => p.s);
+            foreach (var groupedItem in groupedItems)
+            {
+                if (groupedItem.Count() > 1)
+                {
+                    FindDuplicatedPluginsResultTextBox.AppendText($"----------------------------------{Environment.NewLine}");
+                    FindDuplicatedPluginsResultTextBox.AppendText($"{groupedItem.Key} 重复了，重复的有：{Environment.NewLine}");
+                    foreach (var item in groupedItem)
+                    {
+                        FindDuplicatedPluginsResultTextBox.AppendText(item + Environment.NewLine);
+                    }
+                }
+            }
+
+
+            FindDuplicatedPluginsResultTextBox.AppendText($"查找完毕{Environment.NewLine}");
         }
     }
 }

@@ -4,23 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FindDuplicatedFiles"
-        mc:Ignorable="d" Height="450" Width="800" Title="查找重复文件">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <TextBlock Text="仓库名称" VerticalAlignment="Center" Margin="0 0 8 0"></TextBlock>
-        <TextBox Grid.Column="1" Text="{Binding RepositoryName}" Height="24" Name="NameTextBox" Margin="0 8" VerticalContentAlignment="Center"></TextBox>
+        mc:Ignorable="d" Height="450" Width="800" Title="小工具合集">
+    <TabControl>
+        <TabItem Header="查找重复文件" Name="FindDuplicatedFiles">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="1" Grid.Column="1" Content="查找" Click="Find_Click" Margin="0 8" Width="75" HorizontalAlignment="Left"></Button>
+                <TextBlock Text="仓库名称" VerticalAlignment="Center" Margin="0 0 8 0"></TextBlock>
+                <TextBox Grid.Column="1" Height="24" Name="NameTextBox" Margin="0 8" VerticalContentAlignment="Center"></TextBox>
 
-        <TextBox Grid.Row="2" Grid.ColumnSpan="2" IsReadOnly="True" Name="ResultTextBox" Margin="0 8"></TextBox>
-    </Grid>
+                <Button Grid.Row="1" Grid.Column="1" Content="查找" Click="Find_Click" Margin="0 8" Width="75" HorizontalAlignment="Left"></Button>
+
+                <TextBox Grid.Row="2" Grid.ColumnSpan="2" IsReadOnly="True" Name="ResultTextBox" Margin="0 8"></TextBox>
+            </Grid>
+        </TabItem>
+        <TabItem Header="查找重复插件" Name="FindDuplicatedPlugins">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="设计器版本" VerticalAlignment="Center" Margin="0 0 8 0"></TextBlock>
+                <TextBox Grid.Column="1" Text="v9.1" Height="24" Name="DesignerVersion" Margin="0 8" VerticalContentAlignment="Center"></TextBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Gray" Text="设计器版本一般填为 v8，v8.1，v9，v9.1，v10，v10.1 等"></TextBlock>
+
+                <Button Grid.Row="2" Grid.Column="1" Content="查找" Click="FindDuplicatedPlugins_Click" Margin="0 8" Width="75" HorizontalAlignment="Left"></Button>
+
+                <TextBox Grid.Row="3" Grid.ColumnSpan="2" IsReadOnly="True" Name="FindDuplicatedPluginsResultTextBox" Margin="0 8"></TextBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
